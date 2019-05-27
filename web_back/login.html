@@ -9,7 +9,10 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="../web_back/js/bootstrap/js/bootstrap.min.js"></script>
 
 <body>
     <div class="main_wrap">
@@ -29,8 +32,58 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+    <!-- bootstarp的弹出框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">提示框!!</h4>
+                </div>
+                <div class="modal-body my-modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        狠心关闭
+                    </button>
+                    <button type="button" class="btn btn-primary">残忍确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
+<script>
+    $(function () {
+        $('.input_sub').click(function () {
+            var txt = $('.input_txt').val().trim()
+            var pass = $('.input_pass').val().trim()
+            if (txt == "" || pass == "") {
+                $('.my-modal-body').text("写点啥吧")
+                $('#myModal').modal()
+            }
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/login',
+                type: 'post',
+                data: {
+                    user_name: txt,
+                    password: pass,
+                },
+                success: function (backData) {
+                    if (backData.code == 400) {
+                        $('.my-modal-body').text("哥们你是机器人么")
+                        $('#myModal').modal()
+                    } else if (backData.code == 200) {
+                        window.location.href = "./index.html"
+                    }
+                }
+            })
+            return false
+        })
+    })
+</script>
 
 </html>
